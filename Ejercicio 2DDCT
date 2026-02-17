@@ -1,0 +1,30 @@
+#Ejercicio 2DDCT
+#install.packages("pacman") #es un paquete que llama a otros paquetes y si no esta los instala
+library("pacman") #esta funcion llama al paquete instalado
+p_load("ggplot2","dplyr","vroom")
+
+datos_pcr<- vroom(file = "https://raw.githubusercontent.com/ManuelLaraMVZ/resultados_PCR_practica/refs/heads/main/Genes.csv")
+datos_pcr
+gen_referencia<-datos_pcr%>%
+  filter(Gen=="B-actina")%>%
+  select(-1)#seleccionar filas
+gen_referencia
+gen_int<-datos_pcr%>%
+  filter(Gen != "B-actina")%>%
+  select(-1)
+gen_int
+DCT <- gen_int%>%
+  mutate(DC1=C1-gen_referencia$C1,
+         DC2=C2-gen_referencia$C2,
+         DC3=C3-gen_referencia$C3,
+         DT1=T1-gen_referencia$T1,
+         DT2=T2-gen_referencia$T2,
+         DT3=T3-gen_referencia$T3)%>%
+  select(-1:-6)%>%
+  mutate(DosDCTC1=2^-DC1,
+         DosDCTC2=2^-DC2,
+         DosDCTC3=2^-DC3,
+         DosDCTT1=2^-DT1,
+         DosDCTT2=2^-DT2,
+         DosDCTT3=2^-DT3)
+DCT
