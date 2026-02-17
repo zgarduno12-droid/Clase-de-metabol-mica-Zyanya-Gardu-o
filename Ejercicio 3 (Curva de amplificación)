@@ -1,0 +1,22 @@
+install.packages("pacman") #es un paquete que llama a otros paquetes y si no esta los instala
+library("pacman") #esta funcion llama al paquete instalado
+p_load("ggplot2",#para graficar,
+       "dplyr", #para facilitar el manejo de datos , 
+       "vroom") #para llamar repositorios
+datos_curva <- vroom(file="https://raw.githubusercontent.com/ManuelLaraMVZ/resultados_PCR_practica/refs/heads/main/Amplif_grupo1_17022025.csv")
+head(datos_curva)#solo para que me de los seis primeros datos 
+#F1, cada columna es una grafica diferente
+#dplyr es para poder graficar
+curva_1 <- datos_curva%>% #el nuevo objeto va atener una asignacion a partir de la base de datos xx
+  select("Cycle","F1")
+curva_1
+curva_1
+grafica_curva <- ggplot(curva_1,
+                        mapping = aes(x=Cycle,y=F1))+
+  geom_point()+
+  geom_line(color="red",linewidth =1.2)#para escoger tipo de grafica
+grafica_curva
+grafica_curva_2<- grafica_curva+
+  labs(x="ciclos",
+       y="fluorescencia",titles="Creado por Zyanya Garduño",subtitle ="Grafica F1",caption = "Ejercicio 3")+theme_classic()
+grafica_curva_2
